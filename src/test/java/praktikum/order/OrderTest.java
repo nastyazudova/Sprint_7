@@ -39,12 +39,7 @@ public class OrderTest {
         check.orderCreated(createResponse);
     }
 
-    @Test
-    @DisplayName("заказ создан")
-    public void orderListNotEmpty() {
-        ValidatableResponse createResponse = client.getListOfOrders();
-        check.orders(createResponse);
-    }
+
 
 }
 

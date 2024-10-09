@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static java.net.HttpURLConnection.*;
 import static org.junit.Assert.*;
+import org.assertj.core.api.SoftAssertions;
 
 public class CourierChecks {
     @Step("создался успешно")
@@ -28,8 +29,13 @@ public class CourierChecks {
                 .extract()
                 .body().as(Map.class);
 
-        assertEquals("Недостаточно данных для создания учетной записи", body.get("message"));
-        assertEquals(Set.of("message"), body.keySet());
+
+        SoftAssertions soft = new SoftAssertions();
+        soft.assertThat(body.get("message"))
+                .isEqualTo("Недостаточно данных для создания учетной записи");
+        soft.assertThat(body.keySet())
+                .isEqualTo(Set.of("message"));
+        soft.assertAll();
     }
 
     @Step("создать не получилось, такой логин уже есть")
@@ -40,8 +46,13 @@ public class CourierChecks {
                 .extract()
                 .body().as(Map.class);
 
-        assertEquals("Этот логин уже используется", body.get("message"));
-        assertEquals(Set.of("message"), body.keySet());
+        SoftAssertions soft = new SoftAssertions();
+        soft.assertThat(body.get("message"))
+                .isEqualTo("Этот логин уже используется");
+        soft.assertThat(body.keySet())
+                .isEqualTo(Set.of("message"));
+        soft.assertAll();
+
     }
 
     @Step("залогинился")
@@ -65,8 +76,13 @@ public class CourierChecks {
                 .extract()
                 .body().as(Map.class);
 
-        assertEquals("Недостаточно данных для входа", body.get("message"));
-        assertEquals(Set.of("message"), body.keySet());
+        SoftAssertions soft = new SoftAssertions();
+        soft.assertThat(body.get("message"))
+                .isEqualTo("Недостаточно данных для входа");
+        soft.assertThat(body.keySet())
+                .isEqualTo(Set.of("message"));
+        soft.assertAll();
+
     }
 
     @Step("не залогинился с неправильным логином или паролем")
@@ -77,8 +93,13 @@ public class CourierChecks {
                 .extract()
                 .body().as(Map.class);
 
-        assertEquals("Учетная запись не найдена", body.get("message"));
-        assertEquals(Set.of("message"), body.keySet());
+
+        SoftAssertions soft = new SoftAssertions();
+        soft.assertThat(body.get("message"))
+                .isEqualTo("Учетная запись не найдена");
+        soft.assertThat(body.keySet())
+                .isEqualTo(Set.of("message"));
+        soft.assertAll();
     }
 
     @Step("удалился")

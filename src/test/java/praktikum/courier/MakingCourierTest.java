@@ -5,7 +5,7 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Test;
 
-public class MakingCourierAndLoggingTest {
+public class MakingCourierTest {
     private CourierClient client = new CourierClient();
     private CourierChecks check = new CourierChecks();
 
@@ -20,15 +20,11 @@ public class MakingCourierAndLoggingTest {
     }
 
     @Test
-    @DisplayName("курьера можно создать и залогиниться")
-    public void courierMakingAndLogging() {
+    @DisplayName("курьера можно создать")
+    public void courierMaking() {
         var courier = Courier.random();
         ValidatableResponse createResponse = client.createCourier(courier);
         check.checkCreated(createResponse);
-
-        var creds = CourierCredentials.fromCourier(courier);
-        ValidatableResponse loginResponse = client.logIn(creds);
-        courierId = check.checkLoggedIn(loginResponse);
     }
 
     @Test
@@ -73,55 +69,5 @@ public class MakingCourierAndLoggingTest {
         var courier = Courier.withoutFirstName();
         ValidatableResponse createResponse = client.createCourier(courier);
         check.checkCreated(createResponse);
-    }
-
-    @Test
-    @DisplayName("нельзя залогиниться без логина")
-    public void courierLoggingWithoutLogin() {
-        var courier = Courier.random();
-        ValidatableResponse createResponse = client.createCourier(courier);
-        check.checkCreated(createResponse);
-
-        var creds = CourierCredentials.fromCourierWithoutLogin(courier);
-        ValidatableResponse loginResponse = client.logIn(creds);
-        check.checkNotLoggedIn(loginResponse);
-    }
-
-    @Test
-    @DisplayName("нельзя залогиниться без пароля")
-    public void courierLoggingWithoutPassword() {
-        var courier = Courier.random();
-        ValidatableResponse createResponse = client.createCourier(courier);
-        check.checkCreated(createResponse);
-
-        var creds = CourierCredentials.fromCourierWithoutPassword(courier);
-        ValidatableResponse loginResponse = client.logIn(creds);
-        check.checkNotLoggedIn(loginResponse);
-    }
-
-
-
-    @Test
-    @DisplayName("нельзя залогиниться с неправильным логином")
-    public void courierLoggingWithoutWithWrongLogin() {
-        var courier = Courier.random();
-        ValidatableResponse createResponse = client.createCourier(courier);
-        check.checkCreated(createResponse);
-
-        var creds = CourierCredentials.fromCourierWithWrongLogin(courier);
-        ValidatableResponse loginResponse = client.logIn(creds);
-        check.checkNotLoggedInWithWrongLoginOrPassword(loginResponse);
-    }
-
-    @Test
-    @DisplayName("нельзя залогиниться с неправильным паролем")
-    public void courierLoggingWithWrongPassword() {
-        var courier = Courier.random();
-        ValidatableResponse createResponse = client.createCourier(courier);
-        check.checkCreated(createResponse);
-
-        var creds = CourierCredentials.fromCourierWithWrongPassword(courier);
-        ValidatableResponse loginResponse = client.logIn(creds);
-        check.checkNotLoggedInWithWrongLoginOrPassword(loginResponse);
     }
 }
